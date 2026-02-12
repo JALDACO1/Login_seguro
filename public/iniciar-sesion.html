@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Iniciar Sesión - Sistema de Autenticación Segura</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#3b1e8a",
+                "background-light": "#f6f6f8",
+                "background-dark": "#161220",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative w-full max-w-[440px]">
+        <!-- Login Card -->
+        <div class="bg-white dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-8 pt-8 pb-6 text-center">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-4">
+                    <span class="material-icons-round text-3xl">login</span>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Iniciar Sesión</h1>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-sm">Sistema de Autenticación Segura v2.0</p>
+            </div>
+
+            <!-- Mensaje de error/éxito (oculto por defecto) -->
+            <div id="mensaje" class="hidden mx-8 mb-4 p-3 rounded-lg text-sm font-medium"></div>
+
+            <!-- Form -->
+            <form id="loginForm" class="px-8 pb-8 space-y-5">
+                <!-- Username Field -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1" for="username">
+                        Nombre de Usuario
+                    </label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+                            <span class="material-icons-round text-sm">person</span>
+                        </div>
+                        <input
+                            class="block w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm transition-all focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                            id="username"
+                            name="username"
+                            placeholder="usuario123"
+                            required
+                            type="text"
+                            autocomplete="username"
+                        />
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1" for="password">
+                        Contraseña
+                    </label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+                            <span class="material-icons-round text-sm">lock</span>
+                        </div>
+                        <input
+                            class="block w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm transition-all focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                            id="password"
+                            name="password"
+                            placeholder="••••••••"
+                            required
+                            type="password"
+                            autocomplete="current-password"
+                        />
+                        <button class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors" type="button" onclick="togglePassword()">
+                            <span class="material-icons-round text-sm" id="eyeIcon">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                    class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-lg shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-4"
+                    type="submit"
+                    id="submitBtn"
+                >
+                    <span id="btnTexto">Iniciar Sesión</span>
+                    <span class="material-icons-round text-sm" id="btnIcono">arrow_forward</span>
+                </button>
+            </form>
+
+            <!-- Footer Link -->
+            <div class="bg-slate-50/50 dark:bg-slate-800/30 px-8 py-5 border-t border-slate-100 dark:border-slate-800 text-center">
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    ¿No tienes cuenta?
+                    <a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="/login.html">Regístrate aquí</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- System Status Bar -->
+        <div class="mt-8 flex items-center justify-center gap-6 text-[11px] font-medium text-slate-400 uppercase tracking-widest">
+            <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Servidor Activo
+            </div>
+            <div class="flex items-center gap-1.5">
+                <span class="material-icons-round text-[14px]">encrypted</span>
+                SHA-256 + Salt
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  LÓGICA DEL FORMULARIO DE LOGIN
+        // ============================================================
+
+        const form = document.getElementById('loginForm');
+        const mensajeDiv = document.getElementById('mensaje');
+
+        // Mostrar/ocultar contraseña
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        // Mostrar mensaje al usuario
+        function mostrarMensaje(texto, tipo) {
+            mensajeDiv.textContent = texto;
+            mensajeDiv.className = 'mx-8 mb-4 p-3 rounded-lg text-sm font-medium';
+            if (tipo === 'error') {
+                mensajeDiv.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-200');
+            } else {
+                mensajeDiv.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200');
+            }
+        }
+
+        // Interceptar envío del formulario
+        form.addEventListener('submit', async (e) => {
+            // Prevenir el comportamiento por defecto (recargar la página)
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Cambiar botón a "cargando"
+            const btnTexto = document.getElementById('btnTexto');
+            const btnIcono = document.getElementById('btnIcono');
+            const submitBtn = document.getElementById('submitBtn');
+            btnTexto.textContent = 'Verificando...';
+            btnIcono.textContent = 'hourglass_empty';
+            submitBtn.disabled = true;
+
+            try {
+                // Enviar datos al servidor
+                const respuesta = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const datos = await respuesta.json();
+
+                if (respuesta.ok) {
+                    // Login exitoso
+                    mostrarMensaje('¡Autenticación exitosa! Redirigiendo...', 'exito');
+
+                    // Guardar nombre del usuario para mostrarlo en el dashboard
+                    sessionStorage.setItem('usuarioActivo', datos.usuario);
+
+                    // Redirigir al dashboard después de 1 segundo
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1000);
+                } else {
+                    // Error de autenticación
+                    mostrarMensaje(datos.error, 'error');
+                }
+            } catch (error) {
+                mostrarMensaje('Error de conexión con el servidor.', 'error');
+            } finally {
+                // Restaurar botón
+                btnTexto.textContent = 'Iniciar Sesión';
+                btnIcono.textContent = 'arrow_forward';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

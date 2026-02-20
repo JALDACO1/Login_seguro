@@ -273,6 +273,7 @@ app.post('/api/registro', (req, res) => {
     usuarios[usuarioLimpio] = {
         sal: sal,
         hash: hash,
+        rol: 'user',
         creadoEn: new Date().toISOString()
     };
 
@@ -358,8 +359,23 @@ app.post('/api/login', (req, res) => {
 
     res.json({
         mensaje: 'Inicio de sesión exitoso.',
-        usuario: usuarioLimpio
+        usuario: usuarioLimpio,
+        rol: usuario.rol
     });
+});
+
+// ---- RUTA: LISTADO DE USUARIOS PARA EL ADMIN ----
+// GET /api/admin/usuarios
+// Devuelve todos los usuarios con su hash completo (para el dashboard de admin)
+// En producción esta ruta requeriría autenticación de sesión real
+app.get('/api/admin/usuarios', (req, res) => {
+    const lista = Object.entries(usuarios).map(([nombre, datos]) => ({
+        usuario: nombre,
+        hash: datos.hash,
+        rol: datos.rol,
+        creadoEn: datos.creadoEn
+    }));
+    res.json(lista);
 });
 
 // ---- RUTA: VER USUARIOS REGISTRADOS (solo para depuración) ----
@@ -384,16 +400,35 @@ app.get('/api/debug/usuarios', (req, res) => {
 //  INICIAR SERVIDOR
 // ============================================================
 app.listen(PORT, () => {
+    // ---- CREAR USUARIO ADMIN POR DEFECTO ----
+    // Se crea al iniciar el servidor para que siempre exista.
+    // En producción, el admin se crearía en la base de datos durante el despliegue.
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'Admin123!';
+    const adminSal  = generarSal();
+    const adminHash = hashearPassword(ADMIN_PASS, adminSal);
+    usuarios[ADMIN_USER] = {
+        sal:      adminSal,
+        hash:     adminHash,
+        rol:      'admin',
+        creadoEn: new Date().toISOString()
+    };
+
     console.log('\n====================================================');
     console.log('  SERVIDOR DE AUTENTICACIÓN SEGURA');
     console.log(`  Corriendo en: http://localhost:${PORT}`);
     console.log('  ');
+    console.log('  Credenciales de administrador:');
+    console.log(`    Usuario:    ${ADMIN_USER}`);
+    console.log(`    Contraseña: ${ADMIN_PASS}`);
+    console.log('  ');
     console.log('  Rutas disponibles:');
-    console.log(`    GET  http://localhost:${PORT}/login.html      → Registro`);
-    console.log(`    GET  http://localhost:${PORT}/iniciar-sesion.html → Login`);
-    console.log(`    GET  http://localhost:${PORT}/dashboard.html   → Dashboard`);
-    console.log(`    POST http://localhost:${PORT}/api/registro     → API Registro`);
-    console.log(`    POST http://localhost:${PORT}/api/login        → API Login`);
-    console.log(`    GET  http://localhost:${PORT}/api/debug/usuarios → Debug`);
+    console.log(`    GET  http://localhost:${PORT}/login.html           → Registro`);
+    console.log(`    GET  http://localhost:${PORT}/iniciar-sesion.html  → Login`);
+    console.log(`    GET  http://localhost:${PORT}/dashboard.html       → Dashboard usuario`);
+    console.log(`    GET  http://localhost:${PORT}/admin-dashboard.html → Dashboard admin`);
+    console.log(`    POST http://localhost:${PORT}/api/registro         → API Registro`);
+    console.log(`    POST http://localhost:${PORT}/api/login            → API Login`);
+    console.log(`    GET  http://localhost:${PORT}/api/admin/usuarios   → Lista usuarios`);
     console.log('====================================================\n');
 });

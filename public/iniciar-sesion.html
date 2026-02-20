@@ -191,12 +191,17 @@
                     // Login exitoso
                     mostrarMensaje('¡Autenticación exitosa! Redirigiendo...', 'exito');
 
-                    // Guardar nombre del usuario para mostrarlo en el dashboard
+                    // Guardar nombre y ROL del usuario en la sesión
                     sessionStorage.setItem('usuarioActivo', datos.usuario);
+                    sessionStorage.setItem('rolActivo', datos.rol);
 
-                    // Redirigir al dashboard después de 1 segundo
+                    // Redirigir según el rol: admin → admin-dashboard, user → dashboard
+                    const destino = datos.rol === 'admin'
+                        ? '/admin-dashboard.html'
+                        : '/dashboard.html';
+
                     setTimeout(() => {
-                        window.location.href = '/dashboard.html';
+                        window.location.href = destino;
                     }, 1000);
                 } else {
                     // Error de autenticación

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Panel de Administrador | Sistema Seguro</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#3b1e8a",
+                "background-light": "#f6f6f8",
+                "background-dark": "#161220",
+              },
+              fontFamily: { "display": ["Inter", "sans-serif"] },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background-light font-display text-slate-800 min-h-screen flex flex-col">
+
+<!-- Navbar -->
+<nav class="border-b border-primary/10 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-primary p-1.5 rounded-lg">
+                    <span class="material-icons text-white text-xl">shield</span>
+                </div>
+                <span class="font-bold text-lg tracking-tight text-primary">SecureUni <span class="font-normal opacity-60">Dev</span></span>
+                <!-- Badge de Admin -->
+                <span class="ml-2 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[11px] font-bold uppercase tracking-wider border border-amber-200 flex items-center gap-1">
+                    <span class="material-icons text-[12px]">admin_panel_settings</span>
+                    Administrador
+                </span>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-bold text-xs border border-amber-200" id="navIniciales">AD</div>
+                <span class="text-sm font-medium" id="navNombre">admin</span>
+                <button id="btnCerrarSesion" class="flex items-center gap-1 text-sm text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">
+                    <span class="material-icons text-sm">logout</span>
+                    Salir
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header de bienvenida admin -->
+    <div class="mb-8 p-6 bg-white rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold mb-3 border border-amber-200">
+                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                Sesión iniciada como ADMINISTRADOR
+            </div>
+            <h1 class="text-2xl font-bold text-slate-900">
+                Panel de Control
+                <span class="text-primary">Administrativo</span>
+            </h1>
+            <p class="text-slate-500 text-sm mt-1">Bienvenido, <span class="font-semibold text-slate-700" id="nombreAdmin">admin</span>. Tienes acceso completo al sistema.</p>
+        </div>
+        <div class="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center border border-amber-100 flex-shrink-0">
+            <span class="material-icons text-amber-600 text-3xl">admin_panel_settings</span>
+        </div>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+            <p class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Total Usuarios</p>
+            <p class="text-3xl font-bold text-primary" id="totalUsuarios">0</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+            <p class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Algoritmo</p>
+            <p class="text-lg font-bold text-slate-700">SHA-256</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm col-span-2 sm:col-span-1">
+            <p class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Método</p>
+            <p class="text-lg font-bold text-slate-700">Salt + Hash</p>
+        </div>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <!-- Header de la tabla -->
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="material-icons text-primary text-xl">group</span>
+                <h2 class="font-semibold text-slate-900">Registro de Usuarios</h2>
+            </div>
+            <button onclick="cargarUsuarios()" class="flex items-center gap-1 text-xs text-primary hover:bg-primary/5 px-3 py-1.5 rounded-lg border border-primary/20 transition-all font-medium">
+                <span class="material-icons text-sm">refresh</span>
+                Actualizar
+            </button>
+        </div>
+
+        <!-- Tabla -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-50 border-b border-slate-100">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">#</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <div class="flex items-center gap-1">
+                                <span class="material-icons text-[14px]">person</span>
+                                Usuario
+                            </div>
+                        </th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <div class="flex items-center gap-1">
+                                <span class="material-icons text-[14px]">tag</span>
+                                Contraseña (Hash SHA-256)
+                            </div>
+                        </th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Rol</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Registrado</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUsuarios" class="divide-y divide-slate-50">
+                    <!-- Se llena dinámicamente -->
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-slate-400 text-sm">
+                            <span class="material-icons animate-spin text-2xl block mb-2">sync</span>
+                            Cargando usuarios...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Nota educativa al pie de la tabla -->
+        <div class="px-6 py-4 bg-blue-50 border-t border-blue-100 flex gap-3">
+            <span class="material-icons text-blue-500 text-lg flex-shrink-0 mt-0.5">info</span>
+            <p class="text-xs text-blue-700 leading-relaxed">
+                <strong>Nota de seguridad:</strong> Las contraseñas nunca se almacenan en texto plano.
+                Lo que ves son hashes SHA-256 de 256 bits (64 caracteres hexadecimales).
+                Cada usuario tiene una sal única, por eso hashes de contraseñas iguales son diferentes.
+            </p>
+        </div>
+    </div>
+</main>
+
+<script>
+    // ============================================================
+    //  LÓGICA DEL DASHBOARD DE ADMINISTRADOR
+    // ============================================================
+
+    // Verificar que el usuario activo sea admin
+    const usuarioActivo = sessionStorage.getItem('usuarioActivo');
+    const rolActivo     = sessionStorage.getItem('rolActivo');
+
+    if (!usuarioActivo || rolActivo !== 'admin') {
+        // Si no es admin, redirigir
+        window.location.href = '/iniciar-sesion.html';
+    } else {
+        // Mostrar nombre del admin
+        const iniciales = usuarioActivo.substring(0, 2).toUpperCase();
+        document.getElementById('nombreAdmin').textContent  = usuarioActivo;
+        document.getElementById('navNombre').textContent    = usuarioActivo;
+        document.getElementById('navIniciales').textContent = iniciales;
+    }
+
+    // ---- CARGAR Y RENDERIZAR TABLA DE USUARIOS ----
+    async function cargarUsuarios() {
+        const tbody = document.getElementById('tablaUsuarios');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="px-6 py-8 text-center text-slate-400 text-sm">
+                    <span class="material-icons animate-spin text-2xl block mb-2">sync</span>
+                    Cargando...
+                </td>
+            </tr>`;
+
+        try {
+            const respuesta = await fetch('/api/admin/usuarios');
+            const usuarios  = await respuesta.json();
+
+            document.getElementById('totalUsuarios').textContent = usuarios.length;
+
+            if (usuarios.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-slate-400">
+                            No hay usuarios registrados aún.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            // Renderizar una fila por usuario
+            tbody.innerHTML = usuarios.map((u, index) => {
+                // Mostrar el hash completo (64 chars) pero cortado visualmente
+                // El tooltip al hacer hover muestra el hash completo
+                const hashCorto   = u.hash.substring(0, 20) + '...' + u.hash.substring(60);
+                const rolBadge    = u.rol === 'admin'
+                    ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[11px] font-bold border border-amber-200">
+                            <span class="material-icons text-[11px]">star</span>Admin
+                       </span>`
+                    : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-medium border border-slate-200">
+                            <span class="material-icons text-[11px]">person</span>Usuario
+                       </span>`;
+
+                const fecha = new Date(u.creadoEn).toLocaleString('es-MX', {
+                    day: '2-digit', month: '2-digit', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+
+                return `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-4 text-slate-400 font-mono text-xs">${index + 1}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
+                                ${u.usuario.substring(0, 2).toUpperCase()}
+                            </div>
+                            <span class="font-medium text-slate-800">${u.usuario}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <!-- Mostrar hash completo con fuente monoespaciada -->
+                        <div class="group relative">
+                            <div class="flex items-center gap-2">
+                                <span class="material-icons text-emerald-500 text-sm flex-shrink-0">lock</span>
+                                <code class="text-xs font-mono text-slate-500 bg-slate-100 px-2 py-1 rounded cursor-default select-all" title="${u.hash}">
+                                    ${hashCorto}
+                                </code>
+                                <!-- Botón copiar hash completo -->
+                                <button onclick="copiarHash('${u.hash}', this)"
+                                    class="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-primary"
+                                    title="Copiar hash completo">
+                                    <span class="material-icons text-sm">content_copy</span>
+                                </button>
+                            </div>
+                            <!-- Tooltip con hash completo al hacer hover -->
+                            <div class="absolute left-0 top-full mt-1 z-10 hidden group-hover:block bg-slate-900 text-white text-[10px] font-mono p-2 rounded-lg shadow-xl max-w-sm break-all">
+                                ${u.hash}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">${rolBadge}</td>
+                    <td class="px-6 py-4 text-slate-500 text-xs">${fecha}</td>
+                </tr>`;
+            }).join('');
+
+        } catch (error) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="px-6 py-8 text-center text-red-400">
+                        Error al cargar usuarios. ¿El servidor está corriendo?
+                    </td>
+                </tr>`;
+        }
+    }
+
+    // ---- COPIAR HASH AL PORTAPAPELES ----
+    function copiarHash(hash, btn) {
+        navigator.clipboard.writeText(hash).then(() => {
+            const icon = btn.querySelector('.material-icons');
+            icon.textContent = 'check';
+            btn.classList.add('text-emerald-500');
+            setTimeout(() => {
+                icon.textContent = 'content_copy';
+                btn.classList.remove('text-emerald-500');
+            }, 2000);
+        });
+    }
+
+    // ---- CERRAR SESIÓN ----
+    document.getElementById('btnCerrarSesion').addEventListener('click', () => {
+        sessionStorage.removeItem('usuarioActivo');
+        sessionStorage.removeItem('rolActivo');
+        window.location.href = '/iniciar-sesion.html';
+    });
+
+    // Cargar usuarios al entrar
+    cargarUsuarios();
+</script>
+</body>
+</html>

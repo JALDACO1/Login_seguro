@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-
-<html lang="es"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Dashboard de Bienvenida | Sistema Seguro</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Bienvenido | Sistema Seguro</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
           theme: {
@@ -16,159 +15,103 @@
               colors: {
                 "primary": "#3b1e8a",
                 "background-light": "#f6f6f8",
-                "background-dark": "#161220",
-                "emerald": "#10b981",
               },
-              fontFamily: {
-                "display": ["Inter", "sans-serif"]
-              },
+              fontFamily: { "display": ["Inter", "sans-serif"] },
               borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
             },
           },
         }
     </script>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-slate-800 dark:text-slate-100 min-h-screen flex flex-col">
-<!-- Top Navigation Bar -->
-<nav class="border-b border-primary/10 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex justify-between h-16 items-center">
-<div class="flex items-center gap-2">
-<div class="bg-primary p-1.5 rounded-lg">
-<span class="material-icons text-white text-xl">shield</span>
-</div>
-<span class="font-bold text-lg tracking-tight text-primary dark:text-white">SecureUni <span class="font-normal opacity-60">Dev</span></span>
-</div>
-<div class="flex items-center gap-6">
-<div class="hidden md:flex items-center gap-4 text-sm font-medium opacity-70">
-<a class="hover:text-primary transition-colors" href="#">Documentación</a>
-<a class="hover:text-primary transition-colors" href="#">Auditoría</a>
-</div>
-<div class="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
-<button class="flex items-center gap-2 group">
-<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs border border-primary/20" id="navIniciales">
-                            --
-                        </div>
-<span class="text-sm font-medium group-hover:text-primary transition-colors" id="navNombre">Usuario</span>
-</button>
-</div>
-</div>
-</div>
-</nav>
-<!-- Main Content Area -->
-<main class="flex-grow flex items-center justify-center p-6">
-<div class="max-w-4xl w-full">
-<!-- Welcome Card -->
-<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-<div class="p-8 md:p-12">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-<div>
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald/10 text-emerald text-xs font-semibold mb-4 border border-emerald/20">
-<span class="w-2 h-2 rounded-full bg-emerald animate-pulse"></span>
-                                Sesión Verificada &amp; Conexión Segura
-                            </div>
-<h1 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2 leading-tight">
-                                Bienvenido al <span class="text-primary">Sistema Seguro</span>
-</h1>
-<p class="text-slate-500 dark:text-slate-400 text-lg">
-                                Hola, <span class="font-semibold text-slate-700 dark:text-slate-200" id="nombreUsuario">Usuario</span>. Has accedido exitosamente al panel universitario.
-</p>
-</div>
-<div class="flex-shrink-0">
-<div class="w-20 h-20 rounded-2xl bg-primary/5 flex items-center justify-center border border-primary/10">
-<span class="material-icons text-primary text-4xl">verified_user</span>
-</div>
-</div>
-</div>
-<!-- Quick Stats/Info Grid -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-<div class="p-4 rounded-lg bg-background-light dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-<p class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Último Acceso</p>
-<p class="font-medium" id="ultimoAcceso">Ahora</p>
-</div>
-<div class="p-4 rounded-lg bg-background-light dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-<p class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Método de Auth</p>
-<p class="font-medium">SHA-256 + Salt</p>
-</div>
-<div class="p-4 rounded-lg bg-background-light dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-<p class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-1">Nivel de Acceso</p>
-<div class="flex items-center gap-1.5">
-<span class="material-icons text-primary text-sm">stars</span>
-<p class="font-medium">Estudiante</p>
-</div>
-</div>
-</div>
-<!-- Action Buttons -->
-<div class="flex flex-col sm:flex-row items-center gap-4 border-t border-slate-100 dark:border-slate-800 pt-8">
-<button class="w-full sm:w-auto px-8 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-all shadow-md shadow-primary/20 flex items-center justify-center gap-2">
-<span class="material-icons text-sm">dashboard</span>
-                            Ir a mis Proyectos
-                        </button>
-<button class="w-full sm:w-auto px-8 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 font-semibold rounded-lg transition-all flex items-center justify-center gap-2">
-<span class="material-icons text-sm">settings</span>
-                            Configuración
-                        </button>
-<div class="hidden sm:block flex-grow"></div>
-<button id="btnCerrarSesion" class="w-full sm:w-auto px-6 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 font-medium rounded-lg transition-all flex items-center justify-center gap-2">
-<span class="material-icons text-sm text-red-500">logout</span>
-                            Cerrar Sesión
-                        </button>
-</div>
-</div>
-</div>
-<!-- Footer Note -->
-<div class="mt-8 text-center">
-<p class="text-sm text-slate-400 dark:text-slate-500 flex items-center justify-center gap-2">
-<span class="material-icons text-xs">school</span>
-                    Proyecto Universitario de Desarrollo Seguro © 2024
+<body class="bg-background-light font-display text-slate-800 min-h-screen flex flex-col items-center justify-center p-6">
+
+    <!-- Fondo decorativo -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-[15%] -left-[10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-[15%] -right-[10%] w-[50%] h-[50%] bg-primary/8 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative w-full max-w-md">
+        <!-- Card de bienvenida -->
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden text-center">
+
+            <!-- Ícono superior -->
+            <div class="px-8 pt-10 pb-6">
+                <div class="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 border border-primary/10">
+                    <span class="material-icons text-primary text-4xl">verified_user</span>
+                </div>
+
+                <!-- Badge de sesión activa -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold mb-5 border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Sesión activa y verificada
+                </div>
+
+                <!-- Mensaje principal -->
+                <h1 class="text-3xl font-bold text-slate-900 mb-2">
+                    ¡Bienvenido!
+                </h1>
+                <p class="text-4xl font-extrabold text-primary mb-4" id="nombreUsuario">
+                    usuario
                 </p>
-<div class="mt-4 flex justify-center gap-4 grayscale opacity-40">
-<div class="h-8 w-24 bg-slate-300 dark:bg-slate-700 rounded flex items-center justify-center text-[10px] font-bold tracking-tighter uppercase italic">University Logo</div>
-</div>
-</div>
-</div>
-</main>
-<!-- Support Help FAB -->
-<div class="fixed bottom-6 right-6">
-<button class="w-12 h-12 rounded-full bg-primary text-white shadow-lg flex items-center justify-center hover:scale-105 transition-transform active:scale-95">
-<span class="material-icons">help_outline</span>
-</button>
-</div>
+                <p class="text-slate-500 text-sm">
+                    Has iniciado sesión exitosamente en el sistema de autenticación segura.
+                </p>
+            </div>
 
-<script>
-    // ============================================================
-    //  LÓGICA DEL DASHBOARD
-    // ============================================================
+            <!-- Info bar -->
+            <div class="grid grid-cols-2 border-t border-slate-100">
+                <div class="p-4 border-r border-slate-100">
+                    <p class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Rol</p>
+                    <div class="flex items-center justify-center gap-1 text-slate-600 font-medium text-sm">
+                        <span class="material-icons text-sm text-primary">person</span>
+                        Usuario
+                    </div>
+                </div>
+                <div class="p-4">
+                    <p class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 mb-1">Seguridad</p>
+                    <div class="flex items-center justify-center gap-1 text-slate-600 font-medium text-sm">
+                        <span class="material-icons text-sm text-emerald-500">lock</span>
+                        SHA-256
+                    </div>
+                </div>
+            </div>
 
-    // Verificar si hay un usuario activo en sessionStorage
-    // sessionStorage solo persiste durante la pestaña actual del navegador
-    const usuarioActivo = sessionStorage.getItem('usuarioActivo');
+            <!-- Botón cerrar sesión -->
+            <div class="px-8 py-6 border-t border-slate-100">
+                <button id="btnCerrarSesion"
+                    class="w-full flex items-center justify-center gap-2 px-6 py-3 text-red-500 hover:bg-red-50 border border-red-100 hover:border-red-200 font-medium rounded-xl transition-all">
+                    <span class="material-icons text-sm">logout</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </div>
 
-    if (!usuarioActivo) {
-        // Si no hay usuario autenticado, redirigir al login
-        window.location.href = '/iniciar-sesion.html';
-    } else {
-        // Mostrar datos del usuario
-        const nombre = usuarioActivo;
-        const iniciales = nombre.substring(0, 2).toUpperCase();
+        <!-- Pie -->
+        <p class="mt-6 text-center text-xs text-slate-400 flex items-center justify-center gap-1">
+            <span class="material-icons text-xs">school</span>
+            Proyecto Universitario de Desarrollo Seguro
+        </p>
+    </div>
 
-        document.getElementById('nombreUsuario').textContent = nombre;
-        document.getElementById('navNombre').textContent = nombre;
-        document.getElementById('navIniciales').textContent = iniciales;
+    <script>
+        const usuarioActivo = sessionStorage.getItem('usuarioActivo');
+        const rolActivo     = sessionStorage.getItem('rolActivo');
 
-        // Mostrar hora de acceso
-        const ahora = new Date();
-        const hora = ahora.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-        document.getElementById('ultimoAcceso').textContent = `Hoy, ${hora}`;
-    }
+        if (!usuarioActivo) {
+            window.location.href = '/iniciar-sesion.html';
+        } else if (rolActivo === 'admin') {
+            // Si es admin, mandarlo a su dashboard
+            window.location.href = '/admin-dashboard.html';
+        } else {
+            document.getElementById('nombreUsuario').textContent = usuarioActivo;
+        }
 
-    // Botón de cerrar sesión
-    document.getElementById('btnCerrarSesion').addEventListener('click', () => {
-        // Limpiar datos de sesión
-        sessionStorage.removeItem('usuarioActivo');
-        // Redirigir al login
-        window.location.href = '/iniciar-sesion.html';
-    });
-</script>
-
-</body></html>
+        document.getElementById('btnCerrarSesion').addEventListener('click', () => {
+            sessionStorage.removeItem('usuarioActivo');
+            sessionStorage.removeItem('rolActivo');
+            window.location.href = '/iniciar-sesion.html';
+        });
+    </script>
+</body>
+</html>
